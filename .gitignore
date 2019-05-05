@@ -11,3 +11,4 @@ npm-debug.log
 /tests
 db.sqlite3
 install.sh
+settings.py
