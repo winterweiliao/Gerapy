@@ -34,7 +34,7 @@
         </el-table>
         <el-collapse accordion @change="getLog">
           <el-collapse-item v-for="job in jobs[project]" :name="job.id" :key="job.id">
-            <template slot-scope="title">
+            <template slot="title">
               <span v-if="job.spider">
                 <i class="fa fa-bug"></i>
                 {{ $lang[$store.state.lang].columns.spiderName }}:
@@ -251,7 +251,7 @@ export default {
               "setTimeout",
               setTimeout(() => {
                 this.getLog(job);
-              }, 2000)
+              }, 3000)
             );
           })
           .catch(() => {

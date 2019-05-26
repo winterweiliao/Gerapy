@@ -41,8 +41,14 @@ module.exports = {
       {
         test: /\.js$/i,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')],
-        exclude: resolve('node_modules')
+        include: [resolve('src'), resolve('test'),
+          resolve('node_modules/element-ui/src/mixins/emitter.js'),
+          resolve('node_modules/element-ui/src/transitions/collapse-transition.js'),
+          resolve('node_modules/element-ui/src/utils/merge.js'),
+          resolve('node_modules/element-ui/packages/col/src/col.js'),
+          resolve('node_modules/element-ui/packages/row/src/row.js'),
+          resolve('node_modules/element-ui/packages/input/src/calcTextareaHeight.js'),
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/i,
