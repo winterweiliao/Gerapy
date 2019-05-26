@@ -565,7 +565,7 @@ def job_log(request, client_id, project_name, spider_name, job_id):
         try:
             # get last 1000 bytes of log
             response = requests.get(url, timeout=5, headers={
-                'Range': 'bytes=-1000'
+                'Range': 'bytes=-4096'
             }, auth=(client.username, client.password) if client.auth else None)
             # Get encoding
             encoding = response.apparent_encoding
@@ -574,6 +574,11 @@ def job_log(request, client_id, project_name, spider_name, job_id):
                 return JsonResponse({'message': 'Log Not Found'}, status=404)
             # bytes to string
             text = response.content.decode(encoding, errors='replace')
+            lines = text.splitlines()
+            if len(lines) > 5:
+                text = '\n'.join(lines[1:])
+            else:
+                text = '\n'.join(lines)
             return HttpResponse(text)
         except requests.ConnectionError:
             return JsonResponse({'message': 'Load Log Error'}, status=500)
