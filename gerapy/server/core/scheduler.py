@@ -81,6 +81,8 @@ class SchedulerManager(Thread):
         sync jobs
         :return:
         """
+        import django.db
+        django.db.connections.close_all()
         # add new jobs or modify existed jobs
         self._add_or_modify_jobs()
         # remove deleted jobs
