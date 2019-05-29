@@ -30,6 +30,8 @@ def execute(client, project_name, spider_name):
     """
     print('Execute', 'Client', client.name, 'Project Name',
           project_name, 'Spider Name', spider_name)
+    import django.db
+    django.db.connections.close_all()
     # don not add any try except, apscheduler can catch traceback to database
     ip_port = Client.objects.get(id=client.id)
     scrapyd = get_scrapyd(ip_port)
@@ -81,8 +83,6 @@ class SchedulerManager(Thread):
         sync jobs
         :return:
         """
-        import django.db
-        django.db.connections.close_all()
         # add new jobs or modify existed jobs
         self._add_or_modify_jobs()
         # remove deleted jobs
@@ -121,6 +121,8 @@ class SchedulerManager(Thread):
                     trigger = task.trigger
                     configuration = {arg: configuration.get(arg) for arg in args_map.get(trigger) if
                                      configuration.get(arg)}
+                    import django.db
+                    django.db.connections.close_all()
                     # if job doesn't exist, add it. otherwise replace it
                     self.scheduler.add_job(execute, task.trigger, args=[client, task.project, task.spider], id=job_id,
                                            replace_existing=True, **configuration)
