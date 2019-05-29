@@ -13,3 +13,4 @@ db.sqlite3
 install.sh
 settings.py
 projects/
+uwsgi.ini
