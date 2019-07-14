@@ -20,6 +20,29 @@ args_map = {
 }
 
 
+def mysql_db_auto_reconnect(func):
+    """
+    Auto reconnect db when mysql has gone away.
+    """
+    from functools import wraps
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+
+        try:
+            # solve problems
+            print('solve problems')
+            from django import db
+            db.close_old_connections()
+            # solve problems end
+        except Exception as e:
+            print('solve problems fail')
+            print(e.args)
+        return func(*args, **kwargs)
+    return wrapper
+
+
+@mysql_db_auto_reconnect
 def execute(client, project_name, spider_name):
     """
     schedule deployed task
@@ -30,8 +53,6 @@ def execute(client, project_name, spider_name):
     """
     print('Execute', 'Client', client.name, 'Project Name',
           project_name, 'Spider Name', spider_name)
-    import django.db
-    django.db.connections.close_all()
     # don not add any try except, apscheduler can catch traceback to database
     ip_port = Client.objects.get(id=client.id)
     scrapyd = get_scrapyd(ip_port)
