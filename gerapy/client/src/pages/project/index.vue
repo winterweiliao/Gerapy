@@ -129,7 +129,7 @@
           size="mini"
           :disabled="batchSelect.length === 0"
           @click="onBatchDelete"
-          slot-scope="handler">
+          slot="handler">
           <span>{{ $lang[$store.state.lang].buttons.batchDelete }}</span>
         </el-button>
       </bottom-tool-bar>
